@@ -25,7 +25,8 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  String url = "https://owlbot.info/api/v4/dictionary/";
+  // String url = "https://owlbot.info/api/v4/dictionary/";
+  String url = "https://api.twinword.com/api/word/definition_kr/latest/?entry=";
   String token = "dd4f76822e180bea6b489b6b2f4a224560e9fa24";
 
   TextEditingController textEditingController = TextEditingController();
@@ -45,8 +46,12 @@ class _HomepageState extends State<Homepage> {
     streamController.add("waiting");
     Uri targetUrl = Uri.parse(url + textEditingController.text.trim());
 
-    Response response =
-        await get(targetUrl, headers: {"Authorization": "Token " + token});
+    Response response = await get(targetUrl, headers: {
+      "Content-Type": "application/json",
+      "Host": "api.twinword.com",
+      "X-Twaip-Key":
+          "ScL8P2+zWln8zWKpfpHFprBFIzYWeZs6DVhuMrIvIvTqsicQf8RugVSs7kSjXh2L5fatiHHNiho1ERq6hk4iDA=="
+    });
 
     if (response.statusCode == 200) {
       streamController.add(json.decode(response.body));
@@ -141,30 +146,31 @@ class _HomepageState extends State<Homepage> {
               );
             }
             return ListView.builder(
-              itemCount: snapshot.data["definitions"].length,
+              // itemCount: snapshot.data["definitions"].length,
               itemBuilder: (BuildContext context, int index) {
                 return ListBody(
                   children: [
                     Container(
-                        color: Colors.grey[300],
-                        child: ListTile(
-                          leading: snapshot.data["definitions"][index]
-                                      ["image_url"] ==
-                                  null
-                              ? null
-                              : CircleAvatar(
-                                  backgroundImage: NetworkImage(snapshot
-                                      .data["definitions"][index]["image_url"]),
-                                ),
-                          title: Text(textEditingController.text.trim() +
-                              "(" +
-                              snapshot.data["definitions"][index]["type"] +
-                              ")"),
-                        )),
+                      color: Colors.grey[300],
+                      // child: ListTile(
+                      //   leading: snapshot.data["definitions"][index]
+                      //               ["image_url"] ==
+                      //           null
+                      //       ? null
+                      //       : CircleAvatar(
+                      //           backgroundImage: NetworkImage(snapshot
+                      //               .data["definitions"][index]["image_url"]),
+                      //         ),
+                      //   title: Text(textEditingController.text.trim() +
+                      //       "(" +
+                      //       snapshot.data["definitions"][index]["type"] +
+                      //       ")"),
+                      // )
+                    ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                          snapshot.data["definitions"][index]["definition"]),
+                      // child: Text(
+                      //     snapshot.data["definitions"][index]["definition"]),
                     )
                   ],
                 );
