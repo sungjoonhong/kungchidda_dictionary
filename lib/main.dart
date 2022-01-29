@@ -1,19 +1,30 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:kungchidda_dictionary/screen/favoriteScreen.dart';
-import 'package:kungchidda_dictionary/screen/historyScreen.dart';
-import 'package:kungchidda_dictionary/screen/searchScreen.dart';
-import 'package:kungchidda_dictionary/screen/settingScreen.dart';
+import 'package:flutter/services.dart';
+import 'package:kungchidda_dictionary/screen/favorite_screen.dart';
+import 'package:kungchidda_dictionary/screen/history_screen.dart';
+import 'package:kungchidda_dictionary/screen/search_screen.dart';
+// import 'package:kungchidda_dictionary/screen/login_screen.dart';
+import 'package:kungchidda_dictionary/screen/setting_screen.dart';
+import 'package:kungchidda_dictionary/screen/user_info_screen.dart';
 
-void main() => runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Homepage(),
+      routes: <String, WidgetBuilder>{
+        '/userInfoScreen': (BuildContext context) => const UserInfoScreen(),
+      },
+      home: const Homepage(),
     );
   }
 }
@@ -28,7 +39,7 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   final PageController _pageController = PageController(initialPage: 0);
   int bottomSelectedIndex = 0;
-
+  static const platform = MethodChannel('example.com/value');
   List<BottomNavigationBarItem> buildBottomNavBarItems() {
     return [
       const BottomNavigationBarItem(
@@ -59,7 +70,7 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
-    // return const SearchScreen();
+    // return  SearchScreen();
     return Scaffold(
       body: PageView(
           controller: _pageController,
@@ -86,8 +97,8 @@ class _HomepageState extends State<Homepage> {
     setState(() {
       bottomSelectedIndex = index;
       _pageController.jumpToPage(index);
-      // _pageController.animateToPage(index, duration: const Duration(milliseconds: 500), curve: Curves.ease);
-      // _pageController.animateTo(1.0, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+      // _pageController.animateToPage(index, duration:  Duration(milliseconds: 500), curve: Curves.ease);
+      // _pageController.animateTo(1.0, duration:  Duration(milliseconds: 500), curve: Curves.ease);
     });
   }
 
